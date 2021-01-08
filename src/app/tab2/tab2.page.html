@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Notas compartidas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="this.cargaDatos($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <h2 style= "text-align: center;padding-top: 5%;" *ngIf="this.flag">No tienes notas compartidas</h2>
+  <ion-list *ngIf="!this.flag">
+    <ion-searchbar placeholder="Buscar" (ionChange)="this.filterList($event)"> </ion-searchbar>
+
+    <ion-item-sliding *ngFor="let nota of this.listaNotasCopy;let i=index">
+      <ion-item (click)="this.editaNota(nota)">
+        <ion-label>
+          <h2>{{nota.title}}</h2>
+          <p>Últ. Vez modificado {{this.timeSince(nota.date)}}</p>
+        </ion-label>
+        <ion-reorder slot="end"></ion-reorder>
+      </ion-item>
+
+
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="this.editaNota(nota)">
+          <ion-icon name="pencil" style="font-size: x-large;"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
+
+</ion-content>

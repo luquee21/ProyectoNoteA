@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{this.nota.title}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="this.presentPopover()">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="tasks" (ngSubmit)="this.saveNote()">
+    <ion-item>
+      <ion-textarea formControlName="description" placeholder="Escribe aquí..." autocapitalize="true" auto-grow="true">
+      </ion-textarea>
+    </ion-item>
+    <div style="text-align: right;">
+      <ion-button shape="round" color="primary" type="submit" [disabled]="!tasks.valid">Guardar</ion-button>
+    </div>
+  </form>
+    <h4>Ubicación del guardado de la nota</h4>
+    <p *ngIf="!this.showMap">No se guardó la ubicación de la nota</p>
+    <div id="map" style="height: 200px;">
+    </div>
+
+</ion-content>

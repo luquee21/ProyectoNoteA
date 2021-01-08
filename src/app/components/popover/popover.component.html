@@ -1,0 +1,17 @@
+<ion-list *ngIf="this.owner">
+  <ion-item button (click)='this.showInfo()'>Información</ion-item>
+  <ion-item button (click)='this.showChangeTitle()'>Cambiar título</ion-item>
+  <ion-item button (click)='this.showShareNote()'>Compartir</ion-item>
+  <div *ngIf="this.isShared">
+    <ion-item button (click)="this.showUnShareNoteTo()">Dejar de compartir a</ion-item>
+    <ion-item button (click)="this.unShareNoteAll()">Dejar de compartir con todos</ion-item>
+  </div>
+</ion-list>
+
+<ion-list *ngIf="!this.owner">
+  <ion-item button (click)='this.showInfo()'>Información</ion-item>
+  <ion-item button (click)='this.showShareNote()'>Compartir</ion-item>
+  <div *ngIf="this.isShared">
+    <ion-item button (click)='this.unShareNote(this.user.name)'>Dejar de compartir</ion-item>
+  </div>
+</ion-list>

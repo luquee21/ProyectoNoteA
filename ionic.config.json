@@ -1,0 +1,7 @@
+{
+  "name": "Notea",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Notea</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="tasks" (ngSubmit)="this.login()">
+    <ion-item>
+      <ion-label position="floating">Correo electrónico</ion-label>
+      <ion-input formControlName="email" type="email" name="email"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input formControlName="password" type="password" name="password"></ion-input>
+    </ion-item>
+  
+    <ion-button type="submit" expand="full" color="primary" [disabled]="!tasks.valid">Iniciar sesión</ion-button>
+  </form>
+  <p style="text-align: center;">No tienes cuenta?</p>
+  <ion-button expand="full" color="danger" (click)="registerModal()">Registrar</ion-button>
+</ion-content>
