@@ -48,11 +48,11 @@ export class EditNotaPage implements OnInit {
 
   async ngOnInit() {
     this.tasks.get('description').setValue(this.nota.content);
+    this.showMap = false;
     this.loadMap();
     if (this.nota.shared == 1) {
       await this.getUsersShared();
     }
-
   }
 
   public async getUsersShared() {
