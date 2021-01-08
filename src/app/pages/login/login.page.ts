@@ -23,7 +23,6 @@ export class LoginPage implements OnInit {
     private storage: NativeStorage,
     private modalController: ModalController,
     private authService: AuthService,
-    private router:Router,
     private http: HttpService,
     private alertService: ToastService,
     private loading: LoadingService) {
@@ -42,6 +41,7 @@ export class LoginPage implements OnInit {
   public async login() {
     await this.loading.presentLoading();
     this.http.getUser(this.tasks.get('email').value, this.tasks.get('password').value).then(async (data) => {
+      console.log("DENTRO");
       if (data) {
         let dat = JSON.parse(data.data);
         console.log(dat.result);
