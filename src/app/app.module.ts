@@ -19,6 +19,9 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { AuthService } from './services/auth.service';
 import { NotePage } from './pages/note/note.page';
 import { ModalService } from './services/modal.service';
+import { ThemeService } from './services/theme.service';
+import { TimeService } from './services/time.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -31,7 +34,8 @@ import { ModalService } from './services/modal.service';
     BrowserModule, 
     ReactiveFormsModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    TranslateModule.forRoot()
   ],
   providers: [
     HTTP,
@@ -39,6 +43,8 @@ import { ModalService } from './services/modal.service';
     ModalService,
     SplashScreen,
     HttpService,
+    ThemeService,
+    TimeService,
     LoadingService,
     ToastService,
     NativeStorage,

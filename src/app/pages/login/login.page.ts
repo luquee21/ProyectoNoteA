@@ -40,7 +40,7 @@ export class LoginPage implements OnInit {
 
   public async login() {
     await this.loading.presentLoading();
-    this.http.getUser(this.tasks.get('email').value, this.tasks.get('password').value).then(async (data) => {
+      this.http.getUser(this.tasks.get('email').value, this.tasks.get('password').value).then(async (data) => {
       console.log("DENTRO");
       if (data) {
         let dat = JSON.parse(data.data);
@@ -70,6 +70,7 @@ export class LoginPage implements OnInit {
         email: ''
       }
       await this.loading.cancelLoading();
+      console.log(err);
     })
 
   }
