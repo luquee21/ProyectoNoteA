@@ -60,6 +60,7 @@ export class Tab1Page {
             let nota = {
               ...element
             }
+            console.log(nota);
             this.listaNotas.push(nota);
           });
 

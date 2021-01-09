@@ -9,7 +9,7 @@ export class GpsService {
 
   constructor(private geolocation: Geolocation) { }
 
-  public getPosition(){
+  public async getPosition(){
     return this.geolocation.getCurrentPosition();
   }
 

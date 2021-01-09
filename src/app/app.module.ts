@@ -21,21 +21,36 @@ import { NotePage } from './pages/note/note.page';
 import { ModalService } from './services/modal.service';
 import { ThemeService } from './services/theme.service';
 import { TimeService } from './services/time.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { IonicStorageModule } from '@ionic/storage';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { LanguageService } from './services/language.service';
 
 
 
 
-
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+}
 @NgModule({
   declarations: [AppComponent,EditNotaPage, PopoverComponent, NotePage],
   entryComponents: [EditNotaPage],
+  
   imports: [
     BrowserModule, 
     ReactiveFormsModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    TranslateModule.forRoot()
+    HttpClientModule,
+    IonicStorageModule.forRoot(), 
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
   ],
   providers: [
     HTTP,
@@ -43,9 +58,11 @@ import { TranslateModule } from '@ngx-translate/core';
     ModalService,
     SplashScreen,
     HttpService,
+    TranslateModule,
     ThemeService,
     TimeService,
     LoadingService,
+    LanguageService,
     ToastService,
     NativeStorage,
     AuthService,

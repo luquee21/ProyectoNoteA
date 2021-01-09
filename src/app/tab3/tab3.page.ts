@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../model/user';
 import { AuthService } from '../services/auth.service';
+import { LanguageService } from '../services/language.service';
 
 @Component({
   selector: 'app-tab3',
@@ -9,9 +10,8 @@ import { AuthService } from '../services/auth.service';
 })
 export class Tab3Page implements OnInit {
   public user: Usuario;
-  public themeMode;
 
-  constructor(private authS: AuthService) {
+  constructor(private authS: AuthService, private language:LanguageService) {
    
   }
   ngOnInit() {
@@ -21,6 +21,10 @@ export class Tab3Page implements OnInit {
 
   public async logout() {
     await this.authS.logout();
+  }
+
+ public switchLanguage($event) {
+    this.language.setLanguage($event.target.value);
   }
 
   public change($event) {

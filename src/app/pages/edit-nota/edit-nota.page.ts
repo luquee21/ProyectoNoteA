@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, PopoverController } from '@ionic/angular';
+import { AlertController, ModalController, PopoverController } from '@ionic/angular';
 import { Nota } from 'src/app/model/nota';
 import { Map, tileLayer, marker } from 'leaflet';
 import { GpsService } from 'src/app/services/gps.service';
@@ -10,6 +10,7 @@ import { PopoverComponent } from 'src/app/components/popover/popover.component';
 import { HttpService } from 'src/app/services/http.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'firebase';
+
 
 @Component({
   selector: 'app-edit-nota',
@@ -24,9 +25,7 @@ export class EditNotaPage implements OnInit {
   public longitud = 0;
   public tasks: FormGroup;
   public newMarker: any;
-  public showMap: boolean;
   public data: Nota;
-  public isEmpty: boolean;
   public usersShared: Array<User> = [];
 
   constructor(
@@ -36,19 +35,23 @@ export class EditNotaPage implements OnInit {
     private toast: ToastService,
     private gps: GpsService,
     private auth: AuthService,
+    private controller:ModalController,
     private popover: PopoverController,
     private alertController: AlertController
   ) {
     this.tasks = this.formBuilder.group({
       description: ['', Validators.required]
     });
-    this.showMap = false;
-
+    
   }
 
   async ngOnInit() {
     this.tasks.get('description').setValue(this.nota.content);
-    this.loadMap();
+    this.latitud = this.nota.latitude;
+    this.longitud = this.nota.longitude;
+    if (this.longitud != 0 && this.latitud != 0) {
+      this.loadMap();
+    }
     if (this.nota.shared == 1) {
       await this.getUsersShared();
     }
@@ -71,10 +74,7 @@ export class EditNotaPage implements OnInit {
 
 
   public loadMap() {
-    this.latitud = this.nota.latitude;
-    this.longitud = this.nota.longitude;
-    if (this.longitud != 0 && this.latitud != 0) {
-      this.map = new Map("map").setView([this.latitud, this.longitud], 13);
+      this.map = new Map("mapa").setView([this.latitud, this.longitud], 13);
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         { attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' })
         .addTo(this.map);
@@ -84,8 +84,9 @@ export class EditNotaPage implements OnInit {
           true
       }).addTo(this.map);
       this.newMarker.bindPopup("Nota guardada aquí").openPopup();
-      this.showMap = true;
-    }
+  }
+  public async dismissModal(){
+    await this.controller.dismiss();
   }
 
   public async askLocation() {
@@ -100,12 +101,18 @@ export class EditNotaPage implements OnInit {
           cssClass: 'secondary',
         }, {
           text: 'Sí',
-          handler: () => {
-            this.gps.getPosition().then((data) => {
+          handler: async () => {
+            await this.loading.presentLoading();
+            await this.gps.getPosition().then(async (data) => {
               this.latitud = data.coords.latitude;
               this.longitud = data.coords.longitude;
+              await this.toast.presentToast("Coordenadas obtenidas correctamente", "success");
+              console.log(this.latitud + " " + this.longitud);
+              await this.loading.cancelLoading();
+              await this.saveNote();
             }).catch(async (err) => {
               await this.toast.presentToast("No se ha podido guardar la ubicación", "danger");
+              await this.loading.cancelLoading();
             })
           }
         }
@@ -119,7 +126,6 @@ export class EditNotaPage implements OnInit {
 
   public async saveNote() {
     await this.loading.presentLoading();
-    await this.askLocation();
       this.http.updateNoteContent(this.tasks.get('description').value, this.nota.id, this.auth.getUser().id, this.latitud, this.longitud).then(async (data) => {
         let dat = JSON.parse(data.data);
         if (dat.status == "1") {
