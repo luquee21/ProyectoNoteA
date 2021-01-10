@@ -1,22 +1,34 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { Injectable} from '@angular/core';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
-  renderer: Renderer2;
+  private flag:boolean;  
 
-  constructor(private rendererFactory: RendererFactory2, @Inject(DOCUMENT) private document: Document) {
-    this.renderer = this.rendererFactory.createRenderer(null, null);
+  constructor(private storage:NativeStorage) {
   }
 
-  enableDark() {
-    this.renderer.addClass(this.document.body, 'dark-theme');
+  public async enableDark(flag:boolean) {
+    if(flag){
+      document.body.classList.toggle('dark-theme');
+      await this.storage.setItem("dark",true);
+    } else {
+      document.body.classList.remove('dark-theme');
+      await this.storage.setItem("dark",false);
+    }
   }
 
-  enableLight() {
-    this.renderer.removeClass(this.document.body, 'dark-theme');
+  public async setTheme(){
+   this.flag =  await this.storage.getItem("dark");
+   if(this.flag){
+    document.body.classList.toggle('dark-theme');
+   }
+  }
+
+  public getTheme(){
+    return this.flag;
   }
 }
 

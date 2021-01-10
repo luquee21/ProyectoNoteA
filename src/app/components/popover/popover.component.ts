@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, NavParams, PopoverController } from '@ionic/angular';
+import { AlertController, ModalController, NavParams, PopoverController } from '@ionic/angular';
 import { Nota } from 'src/app/model/nota';
 import { Usuario } from 'src/app/model/user';
 import { HttpService } from 'src/app/services/http.service';
@@ -24,7 +24,9 @@ export class PopoverComponent implements OnInit {
     private http: HttpService,
     private toast: ToastService,
     private route: Router,
-    private time: TimeService) {
+    private time: TimeService,
+    private popover: PopoverController,
+    private modal: ModalController) {
     this.nota = this.navParams.get("nota");
     this.user = this.navParams.get("user");
     this.usersShared = this.navParams.get("users");
@@ -42,7 +44,7 @@ export class PopoverComponent implements OnInit {
       const alert = await this.alertController.create({
         cssClass: 'my-custom-class',
         header: 'Información',
-        message: 'Creado: ' + this.time.timeSince(this.nota.date_creation) + '\nÚlt. vez modificado: ' + this.time.timeSince(this.nota.date),
+        message: '<p>Creado: ' + this.time.timeSince(this.nota.date_creation) + '</p>Últ. vez modificado: ' + this.time.timeSince(this.nota.date),
         buttons: [
           {
             text: 'Aceptar',
@@ -57,7 +59,7 @@ export class PopoverComponent implements OnInit {
         const alert = await this.alertController.create({
           cssClass: 'my-custom-class',
           header: 'Información',
-          message: 'Creado por: ' + this.nota.user + '\nÚlt. vez modificado: ' + this.time.timeSince(this.nota.date) + '\nCreado: ' + this.time.timeSince(this.nota.date_creation),
+          message: '<p>Creado por: ' + this.nota.user + '</p>Últ. vez modificado: ' + this.time.timeSince(this.nota.date) + '<p>Creado: ' + this.time.timeSince(this.nota.date_creation) + "</p>",
           buttons: [
             {
               text: 'Aceptar',
@@ -71,7 +73,7 @@ export class PopoverComponent implements OnInit {
         const alert = await this.alertController.create({
           cssClass: 'my-custom-class',
           header: 'Información',
-          message: 'Compartido con: ' + this.usersShared + '\nCreado por: ' + this.nota.user + '\nÚlt. vez modificado: ' + this.time.timeSince(this.nota.date) + '\nCreado: ' + this.time.timeSince(this.nota.date_creation),
+          message: '<p>Compartido con: ' + this.usersShared + '</p>Creado por: ' + this.nota.user + '<p>Últ. vez modificado: ' + this.time.timeSince(this.nota.date) + '</p>Creado: ' + this.time.timeSince(this.nota.date_creation),
           buttons: [
             {
               text: 'Aceptar',
@@ -106,6 +108,8 @@ export class PopoverComponent implements OnInit {
               if (dat.status == "1") {
                 await this.toast.presentToast("Se ha dejado de compartir con todos", "success");
                 this.usersShared = [];
+                await this.popover.dismiss();
+                await this.modal.dismiss();
               } else {
                 await this.toast.presentToast("No se ha podido dejar de compartir con todos", "danger");
               }
@@ -186,7 +190,7 @@ export class PopoverComponent implements OnInit {
         }, {
           text: 'Aceptar',
           handler: async (data) => {
-            this.unShareNote(data.user);
+            this.unShareNote(data.user, true);
           }
         }
       ]
@@ -194,7 +198,7 @@ export class PopoverComponent implements OnInit {
     await alert.present();
   }
 
-  public async unShareNote(user: string) {
+  public async unShareNote(user: string, flag:boolean) {
     if (this.owner && this.user.name == user) {
       await this.toast.presentToast("No puedes dejar de compartir la nota contigo mismo", "danger");
     } else {
@@ -204,7 +208,12 @@ export class PopoverComponent implements OnInit {
           await this.toast.presentToast("Se ha dejado de compartir la nota con éxito", "success");
           const i = this.usersShared.indexOf(user);
           this.usersShared.splice(i, 1);
-          this.route.navigate(["/tabs/tab2"]);
+          if(flag){
+            await this.popover.dismiss();
+          } else {
+            await this.popover.dismiss();
+            await this.modal.dismiss();
+          }
         } else {
           await this.toast.presentToast("No se ha podido dejar de compartir la nota", "danger");
         }
@@ -246,6 +255,7 @@ export class PopoverComponent implements OnInit {
                   if (dat.status == "1") {
                     await this.toast.presentToast("Nota compartida con éxito", "success");
                     this.usersShared.push(data.user);
+                    await this.popover.dismiss();
                   } else {
                     await this.toast.presentToast("No se ha podido compartir la nota", "danger");
                   }

@@ -1,17 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { Nota } from '../model/nota';
-import { EditNotaPage } from '../pages/edit-nota/edit-nota.page';
-import { __spread } from 'tslib';
 import { LoadingService } from '../services/loading.service';
 import { HttpService } from '../services/http.service';
-import { Usuario } from '../model/user';
 import { AuthService } from '../services/auth.service';
 import { ToastService } from '../services/toast.service';
-import { element } from 'protractor';
-import { ChildActivationStart } from '@angular/router';
 import { ModalService } from '../services/modal.service';
-import { notEqual } from 'assert';
 import { TimeService } from '../services/time.service';
 
 
@@ -21,7 +15,7 @@ import { TimeService } from '../services/time.service';
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page {
+export class Tab1Page implements OnInit {
 
   private listaNotas = [];
   private listaNotasCopy: any;
@@ -36,8 +30,7 @@ export class Tab1Page {
     private auth: AuthService,
     private time: TimeService) {
   }
-
-  ionViewWillEnter() {
+  ngOnInit(): void {
     this.cargaDatos();
   }
 
@@ -124,7 +117,7 @@ export class Tab1Page {
   public async showAddNote() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Añadir nota',
+      header: "Añadir nota",
       inputs: [
         {
           name: 'title',
@@ -143,6 +136,7 @@ export class Tab1Page {
               let dat = JSON.parse(data.data);
               if (dat.status == "1") {
                 await this.toast.presentToast("Nota creada con éxito", "success");
+                await this.cargaDatos();
               } else {
                 this.toast.presentToast("No se ha podido crear la nota", "danger");
               }

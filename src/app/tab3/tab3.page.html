@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Perfil
+      {{'PROFILE.profile' | translate }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,25 +9,28 @@
 <ion-content [fullscreen]="true">
   <ion-list>
     <ion-item>
-      <ion-label>Usuario: {{this.user.email}}</ion-label>
+      <ion-icon slot="start" name="person-circle"></ion-icon>
+      <ion-label>{{'PROFILE.user' | translate }}</ion-label>
+      <ion-text slot="end">{{this.user.email}}</ion-text>
     </ion-item>
     <ion-item>
       <ion-icon slot="start" name="moon"></ion-icon>
-      <ion-label>Modo noche</ion-label>
-      <ion-toggle slot="end" [ngModel]="darkMode" (ionChange)="change($event)"></ion-toggle>
+      <ion-label>{{'PROFILE.theme' | translate}}</ion-label>
+      <ion-toggle slot="end" [checked]="this.flag" (ionChange)="change($event)"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="language"></ion-icon>
+      <ion-label>{{'PROFILE.language' | translate}}</ion-label>
+      <ion-select placeholder="{{'PROFILE.language2' | translate}}" [(ngModel)]="lang" (ionChange)="switchLanguage($event)" interface="popover">
+        <ion-select-option value="es">Español</ion-select-option>
+        <ion-select-option value="en">English</ion-select-option>
+      </ion-select>
     </ion-item>
     
-    
   </ion-list>
-  <ion-item>
-    <ion-label>{{'PROFILE.language' | translate}}</ion-label>
-    <ion-select placeholder="{{'PROFILE.language2' | translate}}" [(ngModel)]="lang" (ionChange)="switchLanguage($event)" interface="action-sheet">
-      <ion-select-option value="es">Español</ion-select-option>
-      <ion-select-option value="en">English</ion-select-option>
-    </ion-select>
-  </ion-item>
+  
 
   <div class="logout">
-    <ion-button shape="round" (click)="this.logout()" color="primary">Cerrar sesión</ion-button>
+    <ion-button shape="round" (click)="this.logout()" color="primary">{{'PROFILE.logout' | translate}}</ion-button>
   </div>
 </ion-content>

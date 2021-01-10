@@ -17,7 +17,6 @@ import { PopoverComponent } from './components/popover/popover.component';
 import { HttpService } from './services/http.service';
 import { HTTP } from '@ionic-native/http/ngx';
 import { AuthService } from './services/auth.service';
-import { NotePage } from './pages/note/note.page';
 import { ModalService } from './services/modal.service';
 import { ThemeService } from './services/theme.service';
 import { TimeService } from './services/time.service';
@@ -34,7 +33,7 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
 @NgModule({
-  declarations: [AppComponent,EditNotaPage, PopoverComponent, NotePage],
+  declarations: [AppComponent,EditNotaPage, PopoverComponent],
   entryComponents: [EditNotaPage],
   
   imports: [

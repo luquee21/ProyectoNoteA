@@ -1,0 +1,54 @@
+{
+    "PROFILE": {
+        "profile" : "Perfil",
+        "user" : "Usuario",
+        "theme" : "Tema oscuro",
+        "language" : "Idioma",
+        "language2": "Por defecto",
+        "logout" : "Cerrar sesión"
+    },
+    "TAB2": {
+        "title" : "Notas compartidas",
+        "no_notes": "No hay notas compartidas",
+        "last_time": "Últ. vez modificado",
+        "search" : "Buscar"
+    },
+    "TAB1": {
+        "title" : "Notas",
+        "no_notes": "No hay notas",
+        "last_time": "Últ. vez modificado",
+        "search" : "Buscar"
+    },
+    "TABS": {
+        "tab1" : "Notas",
+        "tab2": "Notas compartidas",
+        "tab3": "Perfil"
+    },
+    "EDIT": {
+        "type_here" : "Escribe aquí...",
+        "save": "Guardar",
+        "location_note": "Ubicación de la nota",
+        "no_save_location_note": "No hay ubicación de la nota"
+    },
+    "LOGIN": {
+        "email" : "Correo electrónico",
+        "password": "Contraseña",
+        "login": "Inicio de sesión",
+        "no_account": "¿No dispones de una cuenta?",
+        "register": "Registrarse"
+    },
+    "REGISTER": {
+        "register" : "Registrarse",
+        "email": "Correo electrónico",
+        "password": "Contraseña"
+    },
+    "POPOVER": {
+        "info" : "Información",
+        "share": "Compartir nota",
+        "unshare": "Dejar de compartir nota",
+        "unshare_to": "Dejar de compartir a",
+        "unshare_all": "Dejar de compartir con todos",
+        "change_title": "Cambiar título"
+    }
+
+}

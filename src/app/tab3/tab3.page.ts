@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Usuario } from '../model/user';
 import { AuthService } from '../services/auth.service';
 import { LanguageService } from '../services/language.service';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-tab3',
@@ -10,12 +12,14 @@ import { LanguageService } from '../services/language.service';
 })
 export class Tab3Page implements OnInit {
   public user: Usuario;
+  private flag:boolean;
 
-  constructor(private authS: AuthService, private language:LanguageService) {
+  constructor(private authS: AuthService, private language:LanguageService, private theme:ThemeService) {
    
   }
   ngOnInit() {
     this.user = this.authS.getUser();
+    this.flag = this.theme.getTheme();
   }
 
 
@@ -27,11 +31,11 @@ export class Tab3Page implements OnInit {
     this.language.setLanguage($event.target.value);
   }
 
-  public change($event) {
+  public async change($event) {
     if ($event.detail.checked) {
-      document.body.classList.toggle('dark-theme');
+      this.theme.enableDark(true);
     } else {
-      document.body.classList.remove('dark-theme');
+      this.theme.enableDark(false);
     }
 
   }

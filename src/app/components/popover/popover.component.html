@@ -1,17 +1,17 @@
 <ion-list *ngIf="this.owner">
-  <ion-item button (click)='this.showInfo()'>Información</ion-item>
-  <ion-item button (click)='this.showChangeTitle()'>Cambiar título</ion-item>
-  <ion-item button (click)='this.showShareNote()'>Compartir</ion-item>
+  <ion-item button (click)='this.showInfo()'>{{'POPOVER.info' | translate }}</ion-item>
+  <ion-item button (click)='this.showChangeTitle()'>{{'POPOVER.change_title' | translate }}</ion-item>
+  <ion-item button (click)='this.showShareNote()'>{{'POPOVER.share' | translate }}</ion-item>
   <div *ngIf="this.isShared">
-    <ion-item button (click)="this.showUnShareNoteTo()">Dejar de compartir a</ion-item>
-    <ion-item button (click)="this.unShareNoteAll()">Dejar de compartir con todos</ion-item>
+    <ion-item button (click)="this.showUnShareNoteTo()">{{'POPOVER.unshare_to' | translate }}</ion-item>
+    <ion-item button (click)="this.unShareNoteAll()">{{'POPOVER.unshare_all' | translate }}</ion-item>
   </div>
 </ion-list>
 
 <ion-list *ngIf="!this.owner">
-  <ion-item button (click)='this.showInfo()'>Información</ion-item>
-  <ion-item button (click)='this.showShareNote()'>Compartir</ion-item>
+  <ion-item button (click)='this.showInfo()'>{{'POPOVER.info' | translate }}</ion-item>
+  <ion-item button (click)='this.showShareNote()'>{{'POPOVER.share' | translate }}</ion-item>
   <div *ngIf="this.isShared">
-    <ion-item button (click)='this.unShareNote(this.user.name)'>Dejar de compartir</ion-item>
+    <ion-item button (click)='this.unShareNote(this.user.name,false)'>{{'POPOVER.unshare' | translate }}</ion-item>
   </div>
 </ion-list>

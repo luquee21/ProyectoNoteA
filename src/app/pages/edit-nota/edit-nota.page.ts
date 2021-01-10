@@ -21,11 +21,12 @@ export class EditNotaPage implements OnInit {
 
   @Input('nota') nota: Nota;
   public map: Map;
-  public latitud = 0;
-  public longitud = 0;
+  public latitud;
+  public longitud;
   public tasks: FormGroup;
   public newMarker: any;
   public data: Nota;
+  public showMap:boolean = false;
   public usersShared: Array<User> = [];
 
   constructor(
@@ -49,7 +50,7 @@ export class EditNotaPage implements OnInit {
     this.tasks.get('description').setValue(this.nota.content);
     this.latitud = this.nota.latitude;
     this.longitud = this.nota.longitude;
-    if (this.longitud != 0 && this.latitud != 0) {
+    if (this.longitud != 'undefined' && this.latitud != 'undefined' || this.longitud != 0 && this.latitud != 0) {
       this.loadMap();
     }
     if (this.nota.shared == 1) {
@@ -63,7 +64,6 @@ export class EditNotaPage implements OnInit {
       let dat = JSON.parse(data.data);
       if (dat.status == "1") {
         dat.result.forEach(element => {
-          console.log(element);
           this.usersShared.push(element.user);
         });
       }
@@ -74,6 +74,7 @@ export class EditNotaPage implements OnInit {
 
 
   public loadMap() {
+    this.showMap = true;
       this.map = new Map("mapa").setView([this.latitud, this.longitud], 13);
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         { attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' })
@@ -84,6 +85,9 @@ export class EditNotaPage implements OnInit {
           true
       }).addTo(this.map);
       this.newMarker.bindPopup("Nota guardada aquí").openPopup();
+      setTimeout(()=>{
+        this.map.invalidateSize();
+      }, 400);
   }
   public async dismissModal(){
     await this.controller.dismiss();
@@ -159,6 +163,7 @@ export class EditNotaPage implements OnInit {
     const popover = await this.popover.create({
       component: PopoverComponent,
       event: ev,
+      animated: true,
       componentProps: {
         nota: this.nota,
         user: this.auth.getUser(),

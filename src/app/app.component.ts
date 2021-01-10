@@ -4,6 +4,8 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './services/auth.service';
+import { LanguageService } from './services/language.service';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +17,9 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private authS: AuthService
+    private authS: AuthService,
+    private language:LanguageService,
+    private theme:ThemeService
   ) {
     this.initializeApp();
   }
@@ -23,8 +27,10 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleBlackTranslucent();
-      this.splashScreen.hide();
+      this.language.setInitialAppLanguage();
       this.authS.init();
+      this.theme.setTheme();
+      this.splashScreen.hide();
     });
   }
 

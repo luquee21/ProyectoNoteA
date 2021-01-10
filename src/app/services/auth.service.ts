@@ -28,6 +28,9 @@ export class AuthService {
     }
     if (u != null) {
       this.user = u;
+      if(this.user.id != -1){
+        this.router.navigate([""]);
+      }
     }
   }
 

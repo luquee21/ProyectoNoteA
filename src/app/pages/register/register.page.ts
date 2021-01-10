@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Usuario } from 'src/app/model/user';
 import { HttpService } from 'src/app/services/http.service';
+import { LoadingService } from 'src/app/services/loading.service';
 import { ToastService } from 'src/app/services/toast.service';
 
 
@@ -18,7 +19,8 @@ export class RegisterPage implements OnInit {
     private formBuilder: FormBuilder,
     private modalController: ModalController,
     private http:HttpService,
-    private toast:ToastService
+    private toast:ToastService,
+    private loading:LoadingService
     ) {
       this.tasks = this.formBuilder.group({
         email: ['',Validators.required],
@@ -33,9 +35,10 @@ export class RegisterPage implements OnInit {
   }
 
 
- public register() {
+ public async register() {
+   await this.loading.presentLoading();
    let user:Usuario;
-    this.http.createUser(this.tasks.get('email').value, this.tasks.get('password').value).then((data) => {
+    this.http.createUser(this.tasks.get('email').value, this.tasks.get('password').value).then(async (data) => {
       console.log(data);
       if (data) {
         let dat = JSON.parse(data.data);
@@ -47,6 +50,7 @@ export class RegisterPage implements OnInit {
             email: this.tasks.get('email').value
           }
           this.toast.presentToast("Usuario registrado con éxito","success");
+          await this.loading.cancelLoading();
           this.dismissRegister();
         } else {
           // error creating user, probably exists
@@ -55,14 +59,16 @@ export class RegisterPage implements OnInit {
             id: -1,
             email: ''
           }
+          await this.loading.cancelLoading();
         }
       }
-    }).catch((err) => {
+    }).catch(async (err) => {
       //error
       user = {
         id: -1,
         email: ''
       }
+      await this.loading.cancelLoading();
     })
   }
 

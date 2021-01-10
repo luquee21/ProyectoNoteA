@@ -1,0 +1,54 @@
+{
+    "PROFILE": {
+        "profile" : "Profile",
+        "user" : "User",
+        "theme" : "Dark theme",
+        "language" : "Language",
+        "language2": "Default",
+        "logout" : "Log out"
+    },
+    "TAB2": {
+        "title" : "Shared notes",
+        "no_notes": "There is no shared notes",
+        "last_time": "Last time modified",
+        "search" : "Search"
+    },
+    "TAB1": {
+        "title" : "Notes",
+        "no_notes": "There is no notes",
+        "last_time": "Last time modified",
+        "search" : "Search"
+    },
+    "TABS": {
+        "tab1" : "Notes",
+        "tab2": "Shared notes",
+        "tab3": "Profile"
+    },
+    "EDIT": {
+        "type_here" : "Type here...",
+        "save": "Save",
+        "location_note": "Location note",
+        "no_save_location_note": "There is no location"
+    },
+    "LOGIN": {
+        "email" : "Email",
+        "password": "Password",
+        "login": "Login",
+        "no_account": "Don't you have an account?",
+        "register": "Sign in"
+    },
+    "REGISTER": {
+        "register" : "Sign in",
+        "email": "Email",
+        "password": "Password"
+    },
+    "POPOVER": {
+        "info" : "Information",
+        "share": "Share note",
+        "unshare": "Unshare note",
+        "unshare_to": "Unshare note to",
+        "unshare_all": "Unshare note to all",
+        "change_title": "Change title"
+    }
+
+}

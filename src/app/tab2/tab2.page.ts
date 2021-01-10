@@ -14,7 +14,7 @@ import { ToastService } from '../services/toast.service';
   templateUrl: './tab2.page.html',
   styleUrls: ['./tab2.page.scss'],
 })
-export class Tab2Page{
+export class Tab2Page implements OnInit{
   private listaNotas = [];
   private listaNotasCopy: any;
   private flag = false;
@@ -27,9 +27,10 @@ export class Tab2Page{
     private time: TimeService) {
   }
 
-  ionViewWillEnter(){
+  ngOnInit(): void {
     this.cargaDatos();
   }
+
 
   public filterList(evt: any) {
     const val = evt.target.value;

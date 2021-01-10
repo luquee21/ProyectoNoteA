@@ -1,13 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button (click)="this.dismissModal()"></ion-back-button>
-      
+      <ion-back-button (click)="this.dismissModal()" defaultHref=""></ion-back-button>
         </ion-buttons>
     <ion-title>{{this.nota.title}}</ion-title>
     <ion-buttons slot="end">
       <ion-icon name="locate-outline" (click)="this.askLocation()"></ion-icon>
-      <ion-button (click)="this.presentPopover()">
+      <ion-button (click)="this.presentPopover()"  slot="end" fill="clear">
         <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical">
         </ion-icon>
       </ion-button>
@@ -18,15 +17,15 @@
 <ion-content>
   <form [formGroup]="tasks" (ngSubmit)="this.saveNote()">
     <ion-item>
-      <ion-textarea formControlName="description" placeholder="Escribe aquí..." autocapitalize="true" auto-grow="true">
+      <ion-textarea formControlName="description" placeholder="{{'EDIT.type_here' | translate}}" autocapitalize="true" auto-grow="true">
       </ion-textarea>
     </ion-item>
     <div style="text-align: right;">
-      <ion-button shape="round" color="primary" type="submit" [disabled]="!tasks.valid">Guardar</ion-button>
+      <ion-button shape="round" color="primary" type="submit" [disabled]="!tasks.valid">{{'EDIT.save' | translate}}</ion-button>
     </div>
   </form>
-    <h4>Ubicación del guardado de la nota</h4>
-    <p *ngIf="!this.showMap">No se guardó la ubicación de la nota</p>
+    <h4>{{'EDIT.location_note' | translate}}</h4>
+    <p *ngIf="!this.showMap">{{'EDIT.no_save_location_note' | translate}}</p>
     <div id="mapa" style="height: 200px;">
     </div>
 

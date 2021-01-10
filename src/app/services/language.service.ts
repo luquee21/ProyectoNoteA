@@ -14,7 +14,7 @@ export class LanguageService {
   selected= '';
   lang:any;
 
-  constructor(private translate: TranslateService, private storage:Storage, private plt: Platform) {
+  constructor(private translate: TranslateService, private storage:Storage) {
 
    }
    setInitialAppLanguage(){
