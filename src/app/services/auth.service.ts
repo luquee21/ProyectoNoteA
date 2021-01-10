@@ -28,9 +28,6 @@ export class AuthService {
     }
     if (u != null) {
       this.user = u;
-      if(this.user.id != -1){
-        this.router.navigate([""]);
-      }
     }
   }
 
@@ -69,7 +66,6 @@ export class AuthService {
       this.router.navigate(["login"]);
       return false;
     } else {
-      console.log(this.user);
       return true;
     }
   }

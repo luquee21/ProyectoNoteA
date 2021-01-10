@@ -91,6 +91,11 @@ export class Tab1Page implements OnInit {
   }
 
 
+  /**
+   * Muestra el alert para borrar la nota
+   * @param id id de la nota
+   */
+
 
   public async muestraBorraNota(id: any) {
     const alert = await this.alertController.create({
@@ -113,6 +118,10 @@ export class Tab1Page implements OnInit {
 
     await alert.present();
   }
+
+  /**
+   * Muestra el alert para añadir una nota
+   */
 
   public async showAddNote() {
     const alert = await this.alertController.create({
@@ -150,6 +159,11 @@ export class Tab1Page implements OnInit {
 
     await alert.present();
   }
+
+  /**
+   * Borra la nota 
+   * @param id id de la nota a borrar
+   */
 
   public borraNota(id: any) {
     this.http.deleteNote(id).then((data) => {

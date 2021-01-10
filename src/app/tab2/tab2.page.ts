@@ -37,7 +37,7 @@ export class Tab2Page implements OnInit{
     this.listaNotasCopy = this.listaNotas;
     if (val && val.trim() != '') {
       this.listaNotasCopy = this.listaNotasCopy.filter((data) => {
-        return (data.titulo.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return (data.title.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
   }

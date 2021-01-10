@@ -50,7 +50,8 @@ export class EditNotaPage implements OnInit {
     this.tasks.get('description').setValue(this.nota.content);
     this.latitud = this.nota.latitude;
     this.longitud = this.nota.longitude;
-    if (this.longitud != 'undefined' && this.latitud != 'undefined' || this.longitud != 0 && this.latitud != 0) {
+    if ((this.longitud != 'undefined' && this.latitud != 'undefined') && (this.longitud != 0 && this.latitud != 0)) {
+      console.log(this.longitud);
       this.loadMap();
     }
     if (this.nota.shared == 1) {
@@ -113,6 +114,9 @@ export class EditNotaPage implements OnInit {
               await this.toast.presentToast("Coordenadas obtenidas correctamente", "success");
               console.log(this.latitud + " " + this.longitud);
               await this.loading.cancelLoading();
+              if(this.tasks.get('description').value == ""){
+                this.tasks.get('description').setValue("coords");
+              }
               await this.saveNote();
             }).catch(async (err) => {
               await this.toast.presentToast("No se ha podido guardar la ubicación", "danger");

@@ -14,7 +14,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content >
   <form [formGroup]="tasks" (ngSubmit)="this.saveNote()">
     <ion-item>
       <ion-textarea formControlName="description" placeholder="{{'EDIT.type_here' | translate}}" autocapitalize="true" auto-grow="true">

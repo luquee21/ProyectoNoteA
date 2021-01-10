@@ -24,11 +24,11 @@ export class AppComponent {
     this.initializeApp();
   }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
+  async initializeApp() {
+    this.platform.ready().then(async () => {
+      await this.authS.init();
       this.statusBar.styleBlackTranslucent();
       this.language.setInitialAppLanguage();
-      this.authS.init();
       this.theme.setTheme();
       this.splashScreen.hide();
     });
