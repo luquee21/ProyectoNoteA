@@ -41,10 +41,8 @@ export class LoginPage implements OnInit {
   public async login() {
     await this.loading.presentLoading();
       this.http.getUser(this.tasks.get('email').value, this.tasks.get('password').value).then(async (data) => {
-      console.log("DENTRO");
       if (data) {
         let dat = JSON.parse(data.data);
-        console.log(dat.result);
         if (dat.status == "1") {
           // user exists
           this.user = {
@@ -52,8 +50,7 @@ export class LoginPage implements OnInit {
             email: this.tasks.get('email').value,
             name: dat.result.user
           }
-          await this.storage.setItem("user", this.user);
-          this.authService.login();
+          this.authService.login(this.user);
         } else {
           // user doesn't exist
           this.user = {

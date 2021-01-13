@@ -24,9 +24,9 @@ export class AppComponent {
     this.initializeApp();
   }
 
-  async initializeApp() {
-    this.platform.ready().then(async () => {
-      await this.authS.init();
+    initializeApp() {
+    this.platform.ready().then(() => {
+      this.authS.init();
       this.statusBar.styleBlackTranslucent();
       this.language.setInitialAppLanguage();
       this.theme.setTheme();

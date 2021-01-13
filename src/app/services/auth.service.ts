@@ -1,4 +1,3 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
@@ -35,17 +34,14 @@ export class AuthService {
     return this.user;
   }
 
-  public async login() {
-    this.user = await this.storage.getItem("user")
-    if (this.isLogged()) {
-      this.router.navigate([""]);
-    }
-
+  public async login(user: Usuario) {
+    this.user = await this.storage.setItem("user", user);
+    this.router.navigate(["/"]);
   }
 
 
   public isLogged(): boolean {
-    if (this.user == null || this.user.id == -1) {
+    if (this.user.id == -1) {
       return false;
     } else {
       return true;
@@ -65,9 +61,8 @@ export class AuthService {
     if (!this.isLogged()) {
       this.router.navigate(["login"]);
       return false;
-    } else {
+    } 
       return true;
-    }
   }
 
 }
