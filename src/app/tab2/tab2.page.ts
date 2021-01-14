@@ -63,7 +63,7 @@ export class Tab2Page implements OnInit {
       console.log("PAG " + this.page);
     }
 
-    this.http.getAllNotes(this.auth.getUser().id, this.page).then(async (data) => {
+    this.http.getAllNotesShared(this.auth.getUser().id, this.page).then(async (data) => {
       let dat = JSON.parse(data.data);
       if (dat.status == 1) {
         dat.result.forEach(element => {
