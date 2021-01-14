@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AlertController, IonInfiniteScroll, IonVirtualScroll } from '@ionic/angular';
 import { Nota } from '../model/nota';
 import { LoadingService } from '../services/loading.service';
 import { HttpService } from '../services/http.service';
@@ -16,10 +16,12 @@ import { TimeService } from '../services/time.service';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
+  @ViewChild('infiniteScroll') ionInfiniteScroll: IonInfiniteScroll;
 
   private listaNotas = [];
   private listaNotasCopy: any;
   private flag: boolean = false;
+  private page: number = 0;
 
   constructor(
     private modal: ModalService,
@@ -31,7 +33,7 @@ export class Tab1Page implements OnInit {
     private time: TimeService) {
   }
   ngOnInit(): void {
-    this.cargaDatos();
+    this.cargaDatos(null, true);
   }
 
   public timeSince(timeCreated) {
@@ -40,39 +42,58 @@ export class Tab1Page implements OnInit {
 
 
 
-  public async cargaDatos($event = null) {
-    if (this.auth.isLogged()) {
-      if (!$event) {
-        await this.loading.presentLoading();
-      }
-      this.http.getAllNotes(this.auth.getUser().id).then(async (data) => {
-        let dat = JSON.parse(data.data);
-        if (dat.status == 1) {
-          this.listaNotas = [];
-          dat.result.forEach(element => {
-            let nota = {
-              ...element
-            }
-            console.log(nota);
-            this.listaNotas.push(nota);
-          });
+  public async cargaDatos($event?, reload?) {
+    if (!$event) {
+      await this.loading.presentLoading();
+    }
 
-          this.listaNotasCopy = this.listaNotas;
-          this.flag = false;
-        } else if (dat.status == 2) {
+    if (reload) {
+      this.ionInfiniteScroll.disabled = false;
+      this.page = 1;
+      this.listaNotas = [];
+    } else {
+      this.page = this.page + 1;
+      console.log("PAG " + this.page);
+    }
+
+    this.http.getAllNotes(this.auth.getUser().id, this.page).then(async (data) => {
+      let dat = JSON.parse(data.data);
+      if (dat.status == 1) {
+        dat.result.forEach(element => {
+          let nota = {
+            ...element
+          }
+          console.log(nota);
+          this.listaNotas.push(nota);
+        });
+
+        this.listaNotasCopy = this.listaNotas;
+        this.flag = false;
+      } else if (dat.status == 2) {
+        //Si el usuario no tenia notas muestro el texto de no tienes notas
+        if (this.listaNotas == []) {
           this.flag = true;
         }
-        if ($event) {
-          $event.target.complete();
-        }
+        this.ionInfiniteScroll.disabled = true;
+      }
+
+      //Sirve para ocultar el loading de ioninfinite o ionrefresh
+      if ($event) {
+        $event.target.complete();
+      } else {
         await this.loading.cancelLoading();
-      }).catch(async (err) => {
+      }
+
+    }).catch(async (err) => {
+
+      //Sirve para ocultar el loading de ioninfinite o ionrefresh
+      if ($event) {
+        $event.target.complete();
+      } else {
         await this.loading.cancelLoading();
-        if ($event) {
-          $event.target.complete();
-        }
-      })
-    }
+      }
+      this.ionInfiniteScroll.disabled = true;
+    })
   }
 
 
@@ -145,7 +166,7 @@ export class Tab1Page implements OnInit {
               let dat = JSON.parse(data.data);
               if (dat.status == "1") {
                 await this.toast.presentToast("Nota creada con éxito", "success");
-                await this.cargaDatos();
+                await this.cargaDatos(null, true);
               } else {
                 this.toast.presentToast("No se ha podido crear la nota", "danger");
               }

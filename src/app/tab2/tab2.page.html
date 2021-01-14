@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="this.cargaDatos($event)">
+  <ion-refresher slot="fixed" (ionRefresh)="this.cargaDatos($event,true)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
@@ -32,4 +32,8 @@
 
   </ion-list>
 
+  <ion-infinite-scroll #infiniteScroll threshold="100px" (ionInfinite)="this.cargaDatos($event,false)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

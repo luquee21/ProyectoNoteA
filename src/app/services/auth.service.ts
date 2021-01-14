@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { VirtualTimeScheduler } from 'rxjs';
 import { Usuario } from '../model/user';
 
 @Injectable({
@@ -19,14 +20,20 @@ export class AuthService {
   }
 
   async init() {
-    let u = null;
+    let u:Usuario = null;
     try {
       u = await this.storage.getItem("user");
+    console.log("Getting user from init");
+    console.log(u.id);
     } catch (err) {
       u = null;
     }
     if (u != null) {
       this.user = u;
+      //añado este autologin porque en mi movil tengo un bug que el canactivate se ejecuta antes que esta funcion y no me autologuea
+      if(this.user.id != -1){
+        this.router.navigate(["/"]);
+      }
     }
   }
 
@@ -36,6 +43,8 @@ export class AuthService {
 
   public async login(user: Usuario) {
     this.user = await this.storage.setItem("user", user);
+    console.log("LOGIN");
+    console.log(this.user.id);
     this.router.navigate(["/"]);
   }
 
@@ -54,10 +63,13 @@ export class AuthService {
       email: ''
     }
     await this.storage.setItem("user", this.user);
+    console.log("LOGOUT");
+    console.log(this.user.id);
     this.router.navigate(["login"]);
   }
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
+    console.log("canactivate " + this.isLogged());
     if (!this.isLogged()) {
       this.router.navigate(["login"]);
       return false;

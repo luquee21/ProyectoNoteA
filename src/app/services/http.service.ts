@@ -10,13 +10,13 @@ export class HttpService {
   }
 
 
-  public getAllNotes(id: number): Promise<HTTPResponse> {
-    let url = 'https://luque21.duckdns.org:4085/notes/all/' + id;
+  public getAllNotes(id: number, page:number): Promise<HTTPResponse> {
+    let url = 'https://luque21.duckdns.org:4085/notes/all/' + id + '/page/' +page;
     return this.http.get(url, {}, { 'apikey': '3i213Kl12s*@' });
   }
 
-  public getAllNotesShared(id: number): Promise<HTTPResponse> {
-    let url = 'https://luque21.duckdns.org:4085/notes/shared/all/' + id;
+  public getAllNotesShared(id: number, page:number): Promise<HTTPResponse> {
+    let url = 'https://luque21.duckdns.org:4085/notes/shared/all/' + id + '/page/' +page;
     return this.http.get(url, {}, { 'apikey': '3i213Kl12s*@' });
   }
 

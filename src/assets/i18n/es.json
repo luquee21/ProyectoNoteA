@@ -17,7 +17,8 @@
         "title" : "Notas",
         "no_notes": "No hay notas",
         "last_time": "Últ. vez modificado",
-        "search" : "Buscar"
+        "search" : "Buscar",
+        "loading": "Cargando notas..."
     },
     "TABS": {
         "tab1" : "Notas",

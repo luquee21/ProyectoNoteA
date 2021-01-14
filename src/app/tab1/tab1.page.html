@@ -7,13 +7,16 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="this.cargaDatos($event)">
+  <ion-refresher slot="fixed" (ionRefresh)="this.cargaDatos($event,true)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
   <h2 style= "text-align: center;padding-top: 5%;" *ngIf="this.flag">{{'TAB1.no_notes' | translate}}</h2>
   <ion-list *ngIf="!this.flag">
     <ion-searchbar placeholder="{{'TAB1.search' | translate}}" (ionChange)="this.filterList($event)"> </ion-searchbar>
+
+
+    
     <ion-item-sliding *ngFor="let nota of this.listaNotasCopy;let i=index">
       <ion-item-options side="start" (ionSwipe)="this.muestraBorraNota(nota.id)">
         <ion-item-option color="danger" expandable (click)="this.muestraBorraNota(nota.id)">
@@ -46,5 +49,10 @@
       <ion-icon name="add-outline" class="icon-button inner-center-btn"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
+  <ion-infinite-scroll #infiniteScroll threshold="100px" (ionInfinite)="this.cargaDatos($event,false)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'TAB1.loading' | translate}}">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
