@@ -48,7 +48,9 @@ export class Tab1Page implements OnInit {
     }
 
     if (reload) {
+      console.log("reloading, infinite scroll enable");
       this.ionInfiniteScroll.disabled = false;
+      console.log("infinite scroll is disabled: " + this.ionInfiniteScroll.disabled);
       this.page = 1;
       this.listaNotas = [];
     } else {
@@ -63,18 +65,25 @@ export class Tab1Page implements OnInit {
           let nota = {
             ...element
           }
-          console.log(nota);
           this.listaNotas.push(nota);
         });
 
         this.listaNotasCopy = this.listaNotas;
         this.flag = false;
+        if (dat.result.length < 10) {
+          console.log("less than 15 items, infinite scroll disable, mo more data to load");
+          this.ionInfiniteScroll.disabled = true;
+          console.log("infinite scroll is disabled: " + this.ionInfiniteScroll.disabled);
+        }
+
+
       } else if (dat.status == 2) {
         //Si el usuario no tenia notas muestro el texto de no tienes notas
         if (this.listaNotas == []) {
           this.flag = true;
         }
         this.ionInfiniteScroll.disabled = true;
+        console.log("infinite scroll disable, data empty");
       }
 
       //Sirve para ocultar el loading de ioninfinite o ionrefresh
@@ -83,16 +92,13 @@ export class Tab1Page implements OnInit {
       } else {
         await this.loading.cancelLoading();
       }
-
     }).catch(async (err) => {
-
       //Sirve para ocultar el loading de ioninfinite o ionrefresh
       if ($event) {
         $event.target.complete();
       } else {
         await this.loading.cancelLoading();
       }
-      this.ionInfiniteScroll.disabled = true;
     })
   }
 
